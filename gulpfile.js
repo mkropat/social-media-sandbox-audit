@@ -10,8 +10,10 @@ let config = require('./config');
 gulp.task('default', () => {
     return audit(`${timestamp()}.log`)
         .pipe(gulp.dest('./logs/raw/'))
-        .pipe(run('jq -f transforms/strip.jq'))
-        .pipe(gulp.dest('./logs/'));
+        .pipe(run('jq -f transforms/strip.jq', { verbosity: 1 }))
+        .pipe(gulp.dest('./logs/'))
+        .pipe(run('jq -f transforms/report.jq', { verbosity: 1 }))
+        .pipe(gulp.dest('./reports/'));
 });
 
 function audit(filename) {
